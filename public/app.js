@@ -32,10 +32,14 @@ function($scope, posts){
 		if(!$scope.title || $scope.title === '') {
 			return;
 		}
-		posts.posts.push({
+		$scope.posts.push({
 			title: $scope.title, 
 			link: $scope.link,
 			'upvotes' : 0
+			comments: [
+				{author: 'joe', body: 'cool post', upvotes: 0},
+				{author: 'bob', body: 'hahaha', upvotes: 0},
+			]
 		});
 		$scope.title = '';
 		$scope.link = '';
@@ -44,6 +48,14 @@ function($scope, posts){
 		post.upvotes += 1;
 	};
  }]);
+
+app.controller('PostsCtrl', [
+'$scope',
+'$stateParams',
+'posts',
+function($scope, $stateParams, posts) {
+	$scope.post = posts.posts[$stateParams.id];
+}]);
 
 
 app.config([
@@ -57,6 +69,14 @@ function($stateProvider, $urlRouterProvider) {
       templateUrl: '/home.html',
       controller: 'MainCtrl'
     });
+
+    .state('posts', {
+    	url: '/posts/{id}',
+    	templateUrl: '/posts.html',
+    	controller: 'PostsCtrl'
+    });
+
+
 
   $urlRouterProvider.otherwise('home');
 }]);
