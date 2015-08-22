@@ -1,6 +1,6 @@
 var app = angular.module('flapperNews', ['ui.router']);
 
-app.config([
+/*app.config([
 '$stateProvider',
 '$urlRouterProvider',
 function($stateProvider, $urlRouterProvider) {
@@ -12,7 +12,7 @@ function($stateProvider, $urlRouterProvider) {
 			controller: 'MainCtrl'
 		});
 	$urlRouterProvider.otherwise('home');
-}]);
+}]);*/
 
 
 app.factory('posts', [function() {
@@ -44,4 +44,20 @@ function($scope, posts){
 		post.upvotes += 1;
 	};
  }]);
+
+
+app.config([
+'$stateProvider',
+'$urlRouterProvider',
+function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider
+    .state('home', {
+      url: '/home',
+      templateUrl: '/home.html',
+      controller: 'MainCtrl'
+    });
+
+  $urlRouterProvider.otherwise('home');
+}]);
 
