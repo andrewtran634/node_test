@@ -11,11 +11,12 @@ function($stateProvider, $urlRouterProvider) {
       templateUrl: '/home.html',
       controller: 'MainCtrl'
     });
-   	/*.state('posts', {
+  $stateProvider
+   	.state('posts', {
    		url: '/posts/{id}',
    		templateUrl:'/posts.html',
    		controller: 'PostsCtrl'
-   	});*/
+   	});
 
   $urlRouterProvider.otherwise('home');
 }]);
@@ -27,7 +28,14 @@ app.factory('posts', [function() {
 	};
 	return o;
 }]);
+app.controller('PostsCtrl', [
+	'$scope',
+	'$stateParams',
+	'posts',
+	function($scope, $stateParams, posts) {
+		$scope.post = posts.posts[$stateParams.id];
 
+}]);
 app.controller('MainCtrl', [
 '$scope',
 'posts',
@@ -55,11 +63,3 @@ function($scope, posts){
 		post.upvotes += 1;
 	};
  }]);
-/*app.controller('PostsCtrl', [
-	'$scope',
-	'$stateParams',
-	'posts',
-	function($scope, $stateParams, posts) {
-		$scope.post = posts.posts[$stateParams.id];
-
-]});*/
