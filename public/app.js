@@ -46,7 +46,7 @@ app.controller('PostsCtrl', [
 			$scope.body = '';
 		};
 		$scope.incrementUpvotes = function(comment) {
-			comment.upvotes += 1;
+			comment.upvotes += 1
 		};
 }]);
 app.controller('MainCtrl', [
