@@ -42,8 +42,14 @@ router.param('post', function(req, res, next, id) {
 	});
 });
 
-router.get('/posts/:post', function(req, res) {
-	res.json(req.post);
+router.get('/posts/:post', function(req, res, next) {
+  req.post.populate('comments', function(err, post) {
+    if (err) { 
+    	return next(err); 
+    }
+
+    	res.json(post);
+	});
 });
 
 router.put('/posts/:post/upvote', function(req, res, next) {
@@ -56,21 +62,29 @@ router.put('/posts/:post/upvote', function(req, res, next) {
 });
 //LET'S UPVOTE SOME COMMENTS
 router.param('comment', function(req, res, next, id) {
-	var query = Post.findById(id);
+	var query = Comment.findById(id);
 
-	query.exec(function(err, post) {
+	query.exec(function(err, comment) {
 		if(err) {
 			return next(err);
 		}
 		if(!post) {
-			return next(new Error('cannot find post'));
+			return next(new Error('cannot find comment'));
 		}
-		req.post = post;
+		req.comment = comment;
 		return next();
 	});
 });
+router.get('/posts/:post/comments/:comment', function (req, res) {
+	res.json(req.comment);
+});
 router.put('/posts/:post/comments/:comment/upvote', function(req, res, next) {
-	req.post.comment
+	req.post.upvote(function(err, comment) {
+		if(err) {
+			return next(err);
+		}
+		res.json(comment);
+	});
 });
 
 router.post('/posts/:post/comments' function(req, res, next) {
