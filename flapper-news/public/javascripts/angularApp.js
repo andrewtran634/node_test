@@ -9,12 +9,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('home', {
       url: '/home',
       templateUrl: '/home.html',
-      controller: 'MainCtrl',
-      resolve: {
-      	postPromise: ['posts', function(posts){
-      		return posts.getAll();
-      	}]
-      }
+      controller: 'MainCtrl'
     });
   $stateProvider
    	.state('posts', {
@@ -27,14 +22,9 @@ function($stateProvider, $urlRouterProvider) {
 }]);
 
 
-app.factory('posts', ['$http', function($http) {
+app.factory('posts', [function() {
 	var o = {
 		posts: []
-	};
-	o.getAll = function() {
-		return $http.get('/posts').success(function() {
-			angular.copy(data, o.posts);
-		});
 	};
 	return o;
 }]);
